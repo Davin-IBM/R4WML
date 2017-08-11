@@ -1,0 +1,10 @@
+Package: R4WML
+Title: R library for Watson Machine Learning (WML)
+Version: 0.0.0.9000
+Authors@R: person("Davin", "Shearer", email = "davin.shearer@ibm.com", role = c("aut", "cre"))
+Description: R library for interacting with the Watson Machine Learning service.
+Depends: R (>= 3.3.2)
+License: Apache 2.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1.9000
