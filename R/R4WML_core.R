@@ -1,23 +1,19 @@
-## wml_utils.R
-
-# Detect and install missing packages before loading them
-list.of.packages <- c('jsonlite', 'httr', 'SnowballC')
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,'Package'])]
-if(length(new.packages)) install.packages(new.packages)
-lapply(list.of.packages, function(x){library(x, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)})
-
 #' Get a Watson Machine Learning (WML) authentication token
 #'
 #' Given a Watson Machine Learning URL, username and password, return an authentication token for use in subsequent requests to WML.
 #' @keywords WML authentication
+#' @param token_url The WML URL to autenticate against
+#' @param username The WML user name
+#' @param password The WML password
+#' @return Authentication token for use in subsequent requests to WML
 #' @export
 #' @examples
 #' get_wml_auth_token()
 
 get_wml_auth_token <- function(token_url, username, password) {
-  req <- httr::GET(token_url, authenticate(username, password), encoding = 'UTF-8')
+  req <- httr::GET(token_url, httr::authenticate(username, password), encoding = 'UTF-8')
   httr::stop_for_status(req, 'authenticate with WatsonML')
-  json <- fromJSON(httr::content(req, as = 'text', type = 'application/json', encoding = 'UTF-8'))
+  json <- jsonlite::fromJSON(httr::content(req, as = 'text', type = 'application/json', encoding = 'UTF-8'))
   json$token
 }
 
@@ -25,15 +21,19 @@ get_wml_auth_token <- function(token_url, username, password) {
 #'
 #' Given a Watson Machine Learning URL, username and password, return an authorization headers for use in subsequent requests to WML.
 #' @keywords WML authorization
+#' @param token_url The WML URL to autenticate against
+#' @param username The WML user name
+#' @param password The WML password
+#' @return Authorization headers for use in subsequent requests to WML
 #' @export
 #' @examples
 #' get_wml_auth_headers()
 
 get_wml_auth_headers <- function(wml_url, username, password) {
-  add_headers('Authorization' = get_wml_auth_token(paste0(wml_url, '/v3/identity/token'), username, password))
+  httr::add_headers('Authorization' = get_wml_auth_token(paste0(wml_url, '/v3/identity/token'), username, password))
 }
 
-#' Create a Watson Machine Learning payload from an R list
+#' Create a Watson Machine Learning (WML) payload from an R list
 #'
 #' Given an R list, return a JSON payload for sending to a WML scoring endpoint
 #' @keywords WML payload
@@ -43,7 +43,7 @@ get_wml_auth_headers <- function(wml_url, username, password) {
 
 to_wml_payload <- function(df, columns = names(df)) {
   ## TODO:  There has to be a less verbose way to do this
-  toJSON(
+  jsonlite::toJSON(
     list(
       fields = columns,
       values = {
@@ -86,9 +86,9 @@ from_wml_payload <- function(wml_results) {
 
 wml_score <- function(scoring_url, auth_headers, payload, verbose=FALSE) {
   req <- {
-    if(verbose) return(httr::POST(scoring_url, auth_headers, content_type_json(), body = payload, encoding = 'UTF-8', verbose()))
-    httr::POST(scoring_url, auth_headers, content_type_json(), body = payload, encoding = 'UTF-8')
+    if(verbose) return(httr::POST(scoring_url, auth_headers, httr::content_type_json(), body = payload, encoding = 'UTF-8', httr::verbose()))
+    httr::POST(scoring_url, auth_headers, httr::content_type_json(), body = payload, encoding = 'UTF-8')
   }
   httr::stop_for_status(req, 'score with WatsonML')
-  fromJSON(httr::content(req, as = 'text', type = 'application/json', encoding = 'UTF-8'))
+  jsonlite::fromJSON(httr::content(req, as = 'text', type = 'application/json', encoding = 'UTF-8'))
 }
