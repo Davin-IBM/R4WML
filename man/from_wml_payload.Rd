@@ -6,6 +6,9 @@
 \usage{
 from_wml_payload(wml_results)
 }
+\arguments{
+\item{wml_results}{JSON results from a WML scoring endpoint}
+}
 \description{
 Given a Watson Machine Learning result, return a data frame
 }

@@ -30,7 +30,7 @@ get_wml_auth_token <- function(token_url, username, password) {
 #' get_wml_auth_headers()
 
 get_wml_auth_headers <- function(wml_url, username, password) {
-  httr::add_headers('Authorization' = get_wml_auth_token(paste0(wml_url, '/v3/identity/token'), username, password))
+  httr::add_headers('Authorization' = paste('Bearer', get_wml_auth_token(paste0(wml_url, '/v3/identity/token'), username, password)))
 }
 
 #' Create a Watson Machine Learning (WML) payload from an R list
@@ -64,6 +64,7 @@ to_wml_payload <- function(df, columns = names(df)) {
 #' Create a data frame from a Watson Machine Learning result
 #'
 #' Given a Watson Machine Learning result, return a data frame
+#' @param wml_results JSON results from a WML scoring endpoint
 #' @keywords WML payload
 #' @export
 #' @examples
