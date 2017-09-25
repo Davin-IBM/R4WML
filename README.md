@@ -42,3 +42,5 @@ payload_scored <- from_wml_payload(results)
 
 View(payload_scored)
 ```
+
+#### For more details, check out this [blog](https://datascience.ibm.com/blog/scoring-with-watson-machine-learning-using-r/).
