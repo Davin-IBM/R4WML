@@ -4,7 +4,7 @@ R library for Watson Machine Learning (WML)
 ## Installation and use
 
 ```R
-devtools::install_github(repo = 'Davin-IBM/R4WML')
+devtools::install_github(repo = 'IBMDataScience/R4WML')
 library(R4WML)
 ```
 
