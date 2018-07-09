@@ -41,21 +41,14 @@ get_wml_auth_headers <- function(wml_url, username, password) {
 #' @examples
 #' to_wml_payload()
 
+# 
+
 to_wml_payload <- function(df, columns = names(df)) {
-  ## TODO:  There has to be a less verbose way to do this
   jsonlite::toJSON(
     list(
       fields = columns,
       values = {
-        ret = list()
-        for(i in 1:nrow(df)) {
-          rec = list()
-          for(j in 1:length(columns)) {
-            rec[[j]] <- df[[columns[j]]][i]
-          }
-          ret[[i]] <- unlist(rec)
-        }
-        ret
+        unname(df[,])
       }
     )
   )

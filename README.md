@@ -4,7 +4,7 @@ R library for Watson Machine Learning (WML)
 ## Installation and use
 
 ```R
-devtools::install_github(repo = 'Davin-IBM/R4WML')
+devtools::install_github(repo = 'IBMDataScience/R4WML')
 library(R4WML)
 ```
 
@@ -42,3 +42,5 @@ payload_scored <- from_wml_payload(results)
 
 View(payload_scored)
 ```
+
+#### For more details, check out this [blog](https://datascience.ibm.com/blog/scoring-with-watson-machine-learning-using-r/).
